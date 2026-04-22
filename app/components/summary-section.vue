@@ -3,9 +3,9 @@ import type { Category } from "~/composables/use-budget";
 
 import { formatRupiah } from "~/composables/use-budget";
 
-type FreelanceImpactItem = {
+type FreelanceAllocationItem = {
   cat: Category;
-  diff: number;
+  amount: number;
 };
 
 type SavingsAllocation = {
@@ -21,7 +21,7 @@ defineProps<{
   expensePct: number;
   savingsPct: number;
   progressFillClass: string;
-  freelanceImpact: FreelanceImpactItem[];
+  freelanceAllocation: FreelanceAllocationItem[];
   savingsAllocation: SavingsAllocation | null;
 }>();
 </script>
@@ -71,18 +71,18 @@ defineProps<{
       </div>
     </div>
 
-    <!-- Freelance impact -->
-    <div v-if="freelanceImpact.length > 0" class="freelance-breakdown">
+    <!-- Freelance allocation -->
+    <div v-if="freelanceAllocation.length > 0" class="freelance-breakdown">
       <div class="fb-title">
-        📈 Dampak Freelance terhadap Pengeluaran
+        📈 Alokasi Pengeluaran dari Freelance
       </div>
       <div
-        v-for="item in freelanceImpact"
+        v-for="item in freelanceAllocation"
         :key="item.cat.id"
         class="fb-row"
       >
-        <span class="fb-label">{{ item.cat.emoji }} {{ item.cat.name }} (+{{ item.cat.value }}%)</span>
-        <span class="fb-val">+{{ formatRupiah(item.diff) }}</span>
+        <span class="fb-label">{{ item.cat.emoji }} {{ item.cat.name }} ({{ item.cat.value }}%)</span>
+        <span class="fb-val">{{ formatRupiah(item.amount) }}</span>
       </div>
     </div>
 

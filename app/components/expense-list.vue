@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { Category } from "~/composables/use-budget";
+import type { CalcMode, Category } from "~/composables/use-budget";
 
 defineProps<{
   categories: Category[];
   salary: number;
   freelance: number;
+  calcMode: CalcMode;
 }>();
 
 defineEmits<{
@@ -39,6 +40,7 @@ defineEmits<{
       :category="cat"
       :salary="salary"
       :freelance="freelance"
+      :calc-mode="calcMode"
       @edit="$emit('edit', idx)"
       @delete="$emit('delete', idx)"
     />

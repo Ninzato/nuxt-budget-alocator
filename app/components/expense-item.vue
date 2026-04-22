@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Category } from "~/composables/use-budget";
+import type { CalcMode, Category } from "~/composables/use-budget";
 
 import { calcCategoryAmount, formatRupiah, getCategoryDetail } from "~/composables/use-budget";
 
@@ -7,6 +7,7 @@ const props = defineProps<{
   category: Category;
   salary: number;
   freelance: number;
+  calcMode?: CalcMode;
 }>();
 
 defineEmits<{
@@ -28,10 +29,10 @@ const emojiBackground = computed(
 );
 
 const amount = computed(() =>
-  calcCategoryAmount(props.category, props.salary, props.freelance),
+  calcCategoryAmount(props.category, props.salary, props.freelance, props.calcMode),
 );
 
-const detail = computed(() => getCategoryDetail(props.category));
+const detail = computed(() => getCategoryDetail(props.category, props.calcMode));
 
 const canEdit = computed(
   () => props.category.deletable || props.category.type !== "custom",
@@ -53,8 +54,11 @@ const canDelete = computed(() => props.category.deletable);
         <template v-else-if="category.type === 'percent_gaji'">
           <span class="badge badge-percent-gaji">{{ category.value }}% Gaji</span>
         </template>
+        <template v-else-if="category.type === 'percent_freelance'">
+          <span class="badge badge-percent-freelance">{{ category.value }}% Freelance</span>
+        </template>
         <template v-else-if="category.type === 'percent_total'">
-          <span class="badge badge-percent-total">{{ category.value }}% Total</span>
+          <span class="badge badge-percent-total">{{ category.value }}% Total (Legacy)</span>
         </template>
         <template v-else-if="category.type === 'custom'">
           <span
@@ -174,6 +178,11 @@ const canDelete = computed(() => props.category.deletable);
 .badge-percent-total {
   background: rgba(0, 184, 148, 0.15);
   color: var(--green-light);
+}
+
+.badge-percent-freelance {
+  background: rgba(116, 185, 255, 0.15);
+  color: var(--blue);
 }
 
 .badge-custom {

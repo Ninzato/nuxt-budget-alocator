@@ -116,7 +116,7 @@ function handleSave() {
     return;
   }
   if (
-    (form.type === "percent_gaji" || form.type === "percent_total")
+    (form.type === "percent_gaji" || form.type === "percent_freelance")
     && (form.rawValue <= 0 || form.rawValue > 100)
   ) {
     errorMessage.value = "Masukkan persentase antara 1-100!";
@@ -176,8 +176,8 @@ function handleSave() {
           <option value="percent_gaji">
             % dari Gaji Pokok
           </option>
-          <option value="percent_total">
-            % dari Gaji + Freelance
+          <option value="percent_freelance">
+            % dari Freelance
           </option>
         </select>
       </div>

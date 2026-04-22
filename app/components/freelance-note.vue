@@ -2,9 +2,9 @@
   <div class="freelance-note">
     <span class="note-icon">💡</span>
     <div class="note-text">
-      <strong>Catatan Freelance:</strong> Pendapatan freelance bervariasi setiap bulan. Kategori bertipe
-      <strong>"% Gaji + Freelance"</strong> menghitung dari total pemasukan, sedangkan
-      <strong>"% Gaji Pokok"</strong> hanya dari gaji.
+      <strong>Catatan Freelance:</strong> Pendapatan freelance dipisahkan dari gaji pokok. Gunakan
+      <strong>"% Gaji Pokok"</strong> untuk alokasi dari gaji dan
+      <strong>"% Freelance"</strong> untuk alokasi dari pendapatan freelance.
     </div>
   </div>
 </template>

@@ -6,6 +6,14 @@ export default defineNuxtConfig({
 
   css: ["~/assets/css/main.css"],
 
+  vite: {
+    optimizeDeps: {
+      include: [
+        "idb",
+      ],
+    },
+  },
+
   eslint: {
     config: {
       standalone: false,
