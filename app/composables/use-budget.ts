@@ -508,6 +508,27 @@ export function useBudget() {
     }
   }
 
+  async function reorderCategory(fromIdx: number, toIdx: number) {
+    if (
+      fromIdx < 0
+      || toIdx < 0
+      || fromIdx >= categories.value.length
+      || toIdx >= categories.value.length
+      || fromIdx === toIdx
+    ) {
+      return;
+    }
+
+    markDirty();
+    const [moved] = categories.value.splice(fromIdx, 1);
+    if (!moved) {
+      return;
+    }
+    categories.value.splice(toIdx, 0, moved);
+    await updateDefaultIfNeeded();
+    await saveCurrentMonth();
+  }
+
   // ── Modal helpers ─────────────────────────────────────────────────────
 
   function openAddModal() {
@@ -632,6 +653,7 @@ export function useBudget() {
     addCategory,
     editCategory,
     deleteCategory,
+    reorderCategory,
     openAddModal,
     openEditModal,
     closeModal,

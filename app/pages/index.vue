@@ -43,6 +43,7 @@ const {
   addCategory,
   editCategory,
   deleteCategory,
+  reorderCategory,
   openAddModal,
   openEditModal,
   closeModal,
@@ -67,6 +68,10 @@ function onSalaryUpdate(value: number) {
 
 function onFreelanceUpdate(value: number) {
   updateFreelance(value);
+}
+
+async function onCategoryReorder(fromIdx: number, toIdx: number) {
+  await reorderCategory(fromIdx, toIdx);
 }
 
 async function onSaveClick() {
@@ -150,6 +155,7 @@ onMounted(async () => {
           @add="openAddModal"
           @edit="openEditModal"
           @delete="deleteCategory"
+          @reorder="onCategoryReorder"
         />
 
         <SummarySection
