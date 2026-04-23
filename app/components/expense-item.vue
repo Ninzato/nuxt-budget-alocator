@@ -15,19 +15,6 @@ defineEmits<{
   delete: [];
 }>();
 
-const EMOJI_BG: Record<string, string> = {
-  nafkah: "rgba(255,118,117,0.12)",
-  listrik: "rgba(253,203,110,0.12)",
-  kucing: "rgba(162,155,254,0.12)",
-  sedekah: "rgba(0,184,148,0.12)",
-  jajan: "rgba(116,185,255,0.12)",
-  kuota: "rgba(225,112,85,0.12)",
-};
-
-const emojiBackground = computed(
-  () => EMOJI_BG[props.category.id] ?? "rgba(108,92,231,0.12)",
-);
-
 const amount = computed(() =>
   calcCategoryAmount(props.category, props.salary, props.freelance, props.calcMode),
 );
@@ -42,8 +29,8 @@ const canDelete = computed(() => props.category.deletable);
 
 <template>
   <div class="expense-item">
-    <div class="emoji" :style="{ background: emojiBackground }">
-      {{ category.emoji }}
+    <div class="icon-wrapper">
+      <UIcon :name="category.icon || 'i-lucide-circle'" class="cat-icon" />
     </div>
     <div class="info">
       <div class="name">
@@ -94,9 +81,7 @@ const canDelete = computed(() => props.category.deletable);
         title="Edit"
         @click="$emit('edit')"
       >
-        <svg viewBox="0 0 24 24">
-          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-        </svg>
+        <UIcon name="i-lucide-pencil" />
       </button>
       <button
         v-if="canDelete"
@@ -104,9 +89,7 @@ const canDelete = computed(() => props.category.deletable);
         title="Hapus"
         @click="$emit('delete')"
       >
-        <svg viewBox="0 0 24 24">
-          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
-        </svg>
+        <UIcon name="i-lucide-trash-2" />
       </button>
     </div>
   </div>
@@ -116,29 +99,36 @@ const canDelete = computed(() => props.category.deletable);
 .expense-item {
   display: flex;
   align-items: center;
-  padding: 14px 16px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  margin-bottom: 10px;
-  transition: all 0.2s;
+  padding: 16px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  transition: border-color 0.2s;
   position: relative;
 }
 
 .expense-item:hover {
-  border-color: var(--accent);
+  border-color: var(--border-mid);
 }
 
-.emoji {
+.icon-wrapper {
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  margin-right: 14px;
+  margin-right: 16px;
   flex-shrink: 0;
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-dark);
+}
+
+.cat-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--gray-mid);
 }
 
 .info {
@@ -148,46 +138,48 @@ const canDelete = computed(() => props.category.deletable);
 
 .name {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
+  color: var(--white-off);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .badge {
   font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 20px;
+  font-weight: 400;
+  font-family: "Source Code Pro", monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.2px;
   white-space: nowrap;
+  border: 1px solid var(--border-dark);
+  background: var(--bg-btn-primary);
 }
 
 .badge-fixed {
-  background: rgba(116, 185, 255, 0.15);
-  color: var(--blue);
+  color: var(--gray-light);
 }
 
 .badge-percent-gaji {
-  background: rgba(253, 203, 110, 0.15);
-  color: var(--orange);
+  color: var(--supabase-green);
+  border-color: var(--border-mid);
 }
 
 .badge-percent-total {
-  background: rgba(0, 184, 148, 0.15);
-  color: var(--green-light);
+  color: var(--supabase-green);
+  border-color: var(--border-mid);
 }
 
 .badge-percent-freelance {
-  background: rgba(116, 185, 255, 0.15);
-  color: var(--blue);
+  color: var(--blue-accent);
+  border-color: var(--border-mid);
 }
 
 .badge-custom {
-  background: rgba(162, 155, 254, 0.15);
-  color: var(--accent-light);
+  color: var(--gray-light);
   cursor: help;
 }
 
@@ -202,17 +194,18 @@ const canDelete = computed(() => props.category.deletable);
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-mid);
   border-radius: var(--radius-sm);
   padding: 12px 16px;
   font-size: 12px;
   font-weight: 400;
-  color: var(--text-secondary);
+  font-family: "Onest", sans-serif;
+  color: var(--gray-light);
   white-space: normal;
   width: 280px;
   z-index: 100;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   line-height: 1.5;
 }
 
@@ -223,7 +216,7 @@ const canDelete = computed(() => props.category.deletable);
   left: 50%;
   transform: translateX(-50%);
   border: 6px solid transparent;
-  border-top-color: var(--border);
+  border-top-color: var(--border-mid);
 }
 
 .tooltip-trigger:hover .tooltip-content {
@@ -232,8 +225,9 @@ const canDelete = computed(() => props.category.deletable);
 
 .detail {
   font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 2px;
+  font-family: "Source Code Pro", monospace;
+  color: var(--gray-mid);
+  margin-top: 4px;
 }
 
 .amount-col {
@@ -244,20 +238,21 @@ const canDelete = computed(() => props.category.deletable);
 
 .amount-val {
   font-size: 15px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 400;
+  font-family: "Source Code Pro", monospace;
+  color: var(--white-off);
 }
 
 .action-btns {
   display: flex;
   gap: 4px;
-  margin-left: 8px;
+  margin-left: 12px;
 }
 
 .btn-icon {
-  background: none;
-  border: none;
-  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--gray-mid);
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
@@ -268,18 +263,18 @@ const canDelete = computed(() => props.category.deletable);
 }
 
 .btn-icon:hover {
-  background: rgba(108, 92, 231, 0.15);
-  color: var(--accent-light);
+  background: var(--bg-btn-primary);
+  border-color: var(--border-dark);
+  color: var(--white-off);
 }
 
 .btn-icon.btn-delete:hover {
-  background: rgba(225, 112, 85, 0.15);
-  color: var(--red);
+  color: var(--crimson);
+  border-color: var(--border-dark);
 }
 
-.btn-icon svg {
+.btn-icon :deep(svg) {
   width: 16px;
   height: 16px;
-  fill: currentColor;
 }
 </style>

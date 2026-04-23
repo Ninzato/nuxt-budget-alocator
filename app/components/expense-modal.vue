@@ -13,44 +13,36 @@ const emit = defineEmits<{
   save: [payload: Omit<Category, "id" | "deletable">];
 }>();
 
-const EMOJIS = [
-  "🏠",
-  "🍔",
-  "🚗",
-  "📱",
-  "💊",
-  "🎮",
-  "👕",
-  "📚",
-  "✈️",
-  "🎁",
-  "💡",
-  "🐱",
-  "💰",
-  "🏥",
-  "☕",
-  "🎬",
-  "🛒",
-  "💳",
-  "📦",
-  "🎯",
-  "🏋️",
-  "🎵",
-  "🧹",
-  "🔧",
-  "👶",
-  "🐶",
-  "🌐",
-  "💻",
-  "📝",
-  "🎓",
-  "🏦",
-  "⛽",
+const ICONS = [
+  "i-lucide-home",
+  "i-lucide-car",
+  "i-lucide-smartphone",
+  "i-lucide-coffee",
+  "i-lucide-shopping-cart",
+  "i-lucide-credit-card",
+  "i-lucide-gift",
+  "i-lucide-cat",
+  "i-lucide-heart-handshake",
+  "i-lucide-briefcase",
+  "i-lucide-globe",
+  "i-lucide-monitor",
+  "i-lucide-wifi",
+  "i-lucide-zap",
+  "i-lucide-graduation-cap",
+  "i-lucide-scissors",
+  "i-lucide-umbrella",
+  "i-lucide-train",
+  "i-lucide-bus",
+  "i-lucide-pizza",
+  "i-lucide-music",
+  "i-lucide-film",
+  "i-lucide-tv",
+  "i-lucide-dumbbell",
 ];
 
 type FormState = {
   name: string;
-  emoji: string;
+  icon: string;
   type: CategoryType;
   rawValue: number;
 };
@@ -61,7 +53,7 @@ const errorMessage = ref("");
 
 const form = reactive<FormState>({
   name: "",
-  emoji: "📦",
+  icon: "i-lucide-shopping-cart",
   type: "fixed",
   rawValue: 0,
 });
@@ -92,13 +84,13 @@ watch(
       return;
     if (cat) {
       form.name = cat.name;
-      form.emoji = cat.emoji;
+      form.icon = cat.icon || "i-lucide-circle";
       form.type = cat.type === "custom" ? "fixed" : (cat.type as CategoryType);
       form.rawValue = cat.type !== "custom" ? (cat.value ?? 0) : 0;
     }
     else {
       form.name = "";
-      form.emoji = "📦";
+      form.icon = "i-lucide-shopping-cart";
       form.type = "fixed";
       form.rawValue = 0;
     }
@@ -126,7 +118,7 @@ function handleSave() {
 
   emit("save", {
     name: form.name.trim(),
-    emoji: form.emoji,
+    icon: form.icon,
     type: form.type,
     value: form.rawValue,
   });
@@ -140,7 +132,10 @@ function handleSave() {
     @click.self="$emit('close')"
   >
     <div class="modal">
-      <h2>{{ isEditing ? "✏️ Edit Kategori Pengeluaran" : "➕ Tambah Kategori Pengeluaran" }}</h2>
+      <h2>
+        <UIcon :name="isEditing ? 'i-lucide-pencil' : 'i-lucide-plus'" class="modal-title-icon" />
+        {{ isEditing ? "Edit Kategori" : "Tambah Kategori" }}
+      </h2>
 
       <div class="form-group">
         <label for="modal-name">Nama Kategori</label>
@@ -153,16 +148,16 @@ function handleSave() {
       </div>
 
       <div class="form-group">
-        <label>Emoji</label>
-        <div class="emoji-picker-grid">
+        <label>Ikon</label>
+        <div class="icon-picker-grid">
           <div
-            v-for="em in EMOJIS"
-            :key="em"
-            class="emoji-option"
-            :class="{ selected: form.emoji === em }"
-            @click="form.emoji = em"
+            v-for="ic in ICONS"
+            :key="ic"
+            class="icon-option"
+            :class="{ selected: form.icon === ic }"
+            @click="form.icon = ic"
           >
-            {{ em }}
+            <UIcon :name="ic" />
           </div>
         </div>
       </div>
@@ -194,7 +189,8 @@ function handleSave() {
       </div>
 
       <div v-if="errorMessage" class="error-message">
-        ⚠️ {{ errorMessage }}
+        <UIcon name="i-lucide-alert-circle" />
+        {{ errorMessage }}
       </div>
 
       <div class="modal-actions">
@@ -214,7 +210,7 @@ function handleSave() {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(15, 15, 15, 0.8);
   backdrop-filter: blur(4px);
   z-index: 1000;
   align-items: center;
@@ -227,14 +223,14 @@ function handleSave() {
 }
 
 .modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  padding: 32px;
   width: 100%;
-  max-width: 460px;
+  max-width: 480px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
-  animation: modal-in 0.25s ease;
+  animation: modal-in 0.2s ease;
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -242,9 +238,8 @@ function handleSave() {
 @keyframes modal-in {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.97);
+    transform: translateY(10px) scale(0.98);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -252,136 +247,151 @@ function handleSave() {
 }
 
 .modal h2 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 24px;
+  color: var(--white-off);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-title-icon {
+  color: var(--gray-mid);
 }
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-weight: 400;
+  font-family: "Source Code Pro", monospace;
+  color: var(--gray-mid);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
 }
 
 .modal input,
 .modal select {
   width: 100%;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-dark);
   border-radius: var(--radius-sm);
-  padding: 11px 14px;
-  color: var(--text-primary);
-  font-size: 14px;
-  font-family: inherit;
+  padding: 12px 16px;
+  color: var(--white-off);
+  font-size: 16px;
+  font-family: "Source Code Pro", monospace;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .modal input:focus,
 .modal select:focus {
-  border-color: var(--accent);
+  border-color: var(--border-light);
 }
 
 .modal select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%239ca3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23898989' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
+  background-position: right 16px center;
 }
 
 .modal select option {
-  background: var(--bg-card);
-  color: var(--text-primary);
+  background: var(--bg-page);
+  color: var(--white-off);
 }
 
 .error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
-  color: var(--red-light);
-  background: rgba(225, 112, 85, 0.08);
-  border: 1px solid rgba(225, 112, 85, 0.2);
+  color: var(--crimson);
+  background: rgba(255, 30, 86, 0.1);
+  border: 1px solid rgba(255, 30, 86, 0.2);
   border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  margin-bottom: 4px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
 }
 
 .modal-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 24px;
 }
 
 .btn-cancel {
   flex: 1;
-  padding: 11px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
+  padding: 12px;
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-pill);
+  color: var(--gray-light);
   font-size: 14px;
-  font-weight: 600;
-  font-family: inherit;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .btn-cancel:hover {
-  background: var(--bg-primary);
+  background: var(--border-subtle);
+  color: var(--white-off);
 }
 
 .btn-save {
   flex: 1;
-  padding: 11px;
-  background: var(--accent);
-  border: none;
-  border-radius: var(--radius-sm);
-  color: white;
+  padding: 12px;
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--white-off);
+  border-radius: var(--radius-pill);
+  color: var(--white-off);
   font-size: 14px;
-  font-weight: 600;
-  font-family: inherit;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .btn-save:hover {
-  background: var(--accent-light);
+  background: var(--white-off);
+  color: var(--bg-btn-primary);
 }
 
-.emoji-picker-grid {
+.icon-picker-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 4px;
-  margin-top: 6px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
-.emoji-option {
+.icon-option {
   width: 100%;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  background: var(--bg-input);
-  border: 2px solid transparent;
-  border-radius: 8px;
+  color: var(--gray-mid);
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.emoji-option:hover {
-  background: var(--bg-primary);
+.icon-option:hover {
+  border-color: var(--border-mid);
+  color: var(--white-off);
 }
 
-.emoji-option.selected {
-  border-color: var(--accent);
-  background: rgba(108, 92, 231, 0.15);
+.icon-option.selected {
+  border-color: var(--supabase-green);
+  color: var(--supabase-green);
+  background: rgba(62, 207, 142, 0.1);
 }
 </style>

@@ -191,9 +191,9 @@ onMounted(async () => {
 
 <style scoped>
 .app-container {
-  max-width: 900px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 24px 16px 80px;
+  padding: 48px 24px 128px;
 }
 
 .loading-overlay {
@@ -208,8 +208,8 @@ onMounted(async () => {
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent);
+  border: 3px solid var(--border-dark);
+  border-top-color: var(--supabase-green);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -222,6 +222,15 @@ onMounted(async () => {
 
 .loading-text {
   font-size: 14px;
-  color: var(--text-secondary);
+  color: var(--gray-mid);
+  font-family: "Source Code Pro", monospace;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+@media (max-width: 600px) {
+  .app-container {
+    padding: 24px 16px 80px;
+  }
 }
 </style>

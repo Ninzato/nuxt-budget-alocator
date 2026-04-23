@@ -47,65 +47,75 @@ defineProps<{
 
 <style scoped>
 .history-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--bg-page);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
   padding: 24px;
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 10px;
+  letter-spacing: -0.16px;
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--supabase-green);
+  box-shadow: 0 0 0 4px var(--green-border);
   flex-shrink: 0;
 }
 
 .empty-state {
   text-align: center;
   padding: 32px 16px;
-  color: var(--text-muted);
+  color: var(--gray-mid);
   font-size: 14px;
+  font-family: "Source Code Pro", monospace;
+  border: 1px dashed var(--border-mid);
+  border-radius: var(--radius);
 }
 
 .history-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .history-item:last-child {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
 .h-month {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--white-off);
 }
 
 .h-detail {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--gray-mid);
+  font-family: "Source Code Pro", monospace;
+  margin-top: 4px;
 }
 
 .h-savings {
   font-size: 15px;
-  font-weight: 700;
-  color: var(--green-light);
+  font-weight: 400;
+  font-family: "Source Code Pro", monospace;
+  color: var(--supabase-green);
 }
 
 .h-savings.negative {
-  color: var(--red-light);
+  color: var(--crimson);
 }
 </style>

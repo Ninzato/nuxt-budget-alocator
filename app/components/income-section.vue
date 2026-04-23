@@ -118,7 +118,7 @@ function onFreelanceInput(event: Event) {
         :disabled="saveStatus === 'saving'"
         @click="$emit('save')"
       >
-        Simpan
+        Simpan Data
       </button>
     </div>
   </div>
@@ -126,27 +126,29 @@ function onFreelanceInput(event: Event) {
 
 <style scoped>
 .income-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--bg-page);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
   padding: 24px;
   margin-bottom: 24px;
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 10px;
+  letter-spacing: -0.16px;
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--supabase-green);
+  box-shadow: 0 0 0 4px var(--green-border);
   flex-shrink: 0;
 }
 
@@ -165,15 +167,16 @@ function onFreelanceInput(event: Event) {
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .input-group label {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-weight: 400;
+  color: var(--gray-mid);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-family: "Source Code Pro", monospace;
+  letter-spacing: 1.2px;
 }
 
 .input-wrapper {
@@ -182,70 +185,70 @@ function onFreelanceInput(event: Event) {
 
 .input-wrapper .prefix {
   position: absolute;
-  left: 12px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
+  color: var(--gray-mid);
+  font-size: 14px;
+  font-family: "Source Code Pro", monospace;
   pointer-events: none;
 }
 
 .input-wrapper input {
   width: 100%;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-dark);
   border-radius: var(--radius-sm);
-  padding: 12px 12px 12px 42px;
-  color: var(--text-primary);
+  padding: 12px 14px 12px 42px;
+  color: var(--white-off);
   font-size: 16px;
-  font-weight: 600;
-  font-family: inherit;
+  font-family: "Source Code Pro", monospace;
   outline: none;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-wrapper input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-color: var(--border-light);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .input-wrapper input::placeholder {
-  color: var(--text-muted);
-  font-weight: 400;
+  color: var(--gray-dark);
 }
 
 .total-income-bar {
-  margin-top: 20px;
+  margin-top: 24px;
   padding: 16px 20px;
-  background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(162, 155, 254, 0.05));
-  border: 1px solid rgba(108, 92, 231, 0.2);
-  border-radius: var(--radius-sm);
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .total-income-bar .label {
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 14px;
+  color: var(--gray-light);
+  font-weight: 400;
 }
 
 .total-income-bar .amount {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--accent-light);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--supabase-green);
+  font-family: "Source Code Pro", monospace;
+  line-height: 1.2;
 }
 
 .save-row {
-  margin-top: 16px;
+  margin-top: 24px;
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .save-info {
@@ -253,46 +256,49 @@ function onFreelanceInput(event: Event) {
 }
 
 .save-status {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-off);
 }
 
 .save-meta {
-  margin-top: 2px;
+  margin-top: 4px;
   font-size: 12px;
-  color: var(--text-muted);
+  font-family: "Source Code Pro", monospace;
+  color: var(--gray-mid);
 }
 
 .save-info.stale .save-status {
-  color: var(--orange);
+  color: var(--blue-accent);
 }
 
 .save-info.error .save-status {
-  color: var(--red-light);
+  color: var(--crimson);
 }
 
 .btn-save {
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #fff;
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: 700;
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--white-off);
+  color: var(--white-off);
+  border-radius: var(--radius-pill);
+  padding: 8px 32px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
 }
 
 .btn-save:hover:not(:disabled) {
-  background: var(--accent-light);
-  border-color: var(--accent-light);
+  background: var(--white-off);
+  color: var(--bg-btn-primary);
 }
 
 .btn-save:disabled {
-  opacity: 0.65;
+  opacity: 0.5;
   cursor: not-allowed;
+  border-color: var(--border-mid);
+  color: var(--gray-mid);
 }
 
 @media (max-width: 600px) {

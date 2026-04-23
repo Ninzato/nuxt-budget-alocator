@@ -15,14 +15,16 @@ defineEmits<{
       :class="{ active: activeTab === 'planner' }"
       @click="$emit('change', 'planner')"
     >
-      📊 Planner
+      <UIcon name="i-lucide-bar-chart-3" class="tab-icon" />
+      Planner
     </button>
     <button
       class="tab-btn"
       :class="{ active: activeTab === 'history' }"
       @click="$emit('change', 'history')"
     >
-      📋 Riwayat
+      <UIcon name="i-lucide-history" class="tab-icon" />
+      Riwayat
     </button>
   </div>
 </template>
@@ -30,33 +32,43 @@ defineEmits<{
 <style scoped>
 .tab-bar {
   display: flex;
-  gap: 4px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius);
-  padding: 4px;
-  margin-bottom: 24px;
+  gap: 8px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-pill);
+  padding: 6px;
+  margin-bottom: 32px;
 }
 
 .tab-btn {
   flex: 1;
-  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
   background: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
-  font-family: inherit;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--gray-mid);
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
+.tab-icon {
+  width: 16px;
+  height: 16px;
+}
+
 .tab-btn.active {
-  background: var(--accent);
-  color: white;
+  background: var(--bg-btn-primary);
+  border-color: var(--border-dark);
+  color: var(--white-off);
 }
 
 .tab-btn:not(.active):hover {
-  color: var(--text-primary);
+  color: var(--gray-light);
 }
 </style>

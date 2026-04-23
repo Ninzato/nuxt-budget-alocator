@@ -59,8 +59,8 @@ defineProps<{
 
     <div class="progress-bar-container">
       <div class="progress-label">
-        <span>Pengeluaran</span>
-        <span>{{ expensePct }}%</span>
+        <span class="progress-title">PENGELUARAN</span>
+        <span class="progress-pct">{{ expensePct }}%</span>
       </div>
       <div class="progress-track">
         <div
@@ -71,62 +71,61 @@ defineProps<{
       </div>
     </div>
 
-    <!-- Freelance allocation -->
-    <div v-if="freelanceAllocation.length > 0" class="freelance-breakdown">
-      <div class="fb-title">
-        📈 Alokasi Pengeluaran dari Freelance
-      </div>
-      <div
-        v-for="item in freelanceAllocation"
-        :key="item.cat.id"
-        class="fb-row"
-      >
-        <span class="fb-label">{{ item.cat.emoji }} {{ item.cat.name }} ({{ item.cat.value }}%)</span>
-        <span class="fb-val">{{ formatRupiah(item.amount) }}</span>
-      </div>
-    </div>
-
     <!-- Savings allocation -->
-    <div v-if="savingsAllocation" class="savings-alloc">
-      <div class="sa-title">
-        💰 Alokasi Tabungan (Saran)
+    <div v-if="savingsAllocation" class="allocation-block savings-alloc">
+      <div class="alloc-title">
+        <UIcon name="i-lucide-wallet" class="alloc-icon" />
+        Alokasi Tabungan (TO BE IMPLEMENTED)
       </div>
-      <div class="sa-row">
-        <span class="sa-label">🛡️ Dana Darurat (40%)</span>
-        <span class="sa-val">{{ formatRupiah(savingsAllocation.emergency) }}</span>
+      <!-- <div class="alloc-row">
+        <span class="alloc-label">
+          <UIcon name="i-lucide-shield-check" class="cat-icon" />
+          Dana Darurat (40%)
+        </span>
+        <span class="alloc-val">{{ formatRupiah(savingsAllocation.emergency) }}</span>
       </div>
-      <div class="sa-row">
-        <span class="sa-label">📈 Investasi (30%)</span>
-        <span class="sa-val">{{ formatRupiah(savingsAllocation.investment) }}</span>
+      <div class="alloc-row">
+        <span class="alloc-label">
+          <UIcon name="i-lucide-line-chart" class="cat-icon" />
+          Investasi (30%)
+        </span>
+        <span class="alloc-val">{{ formatRupiah(savingsAllocation.investment) }}</span>
       </div>
-      <div class="sa-row">
-        <span class="sa-label">🎉 Hiburan (15%)</span>
-        <span class="sa-val">{{ formatRupiah(savingsAllocation.fun) }}</span>
+      <div class="alloc-row">
+        <span class="alloc-label">
+          <UIcon name="i-lucide-party-popper" class="cat-icon" />
+          Hiburan (15%)
+        </span>
+        <span class="alloc-val">{{ formatRupiah(savingsAllocation.fun) }}</span>
       </div>
-      <div class="sa-row">
-        <span class="sa-label">🔄 Buffer/Fleksibel (15%)</span>
-        <span class="sa-val">{{ formatRupiah(savingsAllocation.buffer) }}</span>
-      </div>
+      <div class="alloc-row">
+        <span class="alloc-label">
+          <UIcon name="i-lucide-refresh-cw" class="cat-icon" />
+          Buffer/Fleksibel (15%)
+        </span>
+        <span class="alloc-val">{{ formatRupiah(savingsAllocation.buffer) }}</span>
+      </div> -->
     </div>
   </div>
 </template>
 
 <style scoped>
 .summary-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--bg-page);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
   padding: 24px;
   margin-bottom: 24px;
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 10px;
+  letter-spacing: -0.16px;
 }
 
 .dot {
@@ -137,14 +136,15 @@ defineProps<{
 }
 
 .dot-green {
-  background: var(--green);
+  background: var(--supabase-green);
+  box-shadow: 0 0 0 4px var(--green-border);
 }
 
 .summary-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 600px) {
@@ -154,147 +154,150 @@ defineProps<{
 }
 
 .summary-card {
-  padding: 18px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-dark);
+  background: var(--bg-btn-primary);
 }
 
 .expense-card {
-  background: rgba(225, 112, 85, 0.05);
-  border-color: rgba(225, 112, 85, 0.15);
+  border-color: var(--border-mid);
 }
 
 .savings-card {
-  background: rgba(0, 184, 148, 0.05);
-  border-color: rgba(0, 184, 148, 0.15);
+  border-color: var(--border-mid);
 }
 
 .s-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 14px;
+  color: var(--gray-mid);
+  font-weight: 400;
   margin-bottom: 6px;
 }
 
 .s-value {
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 400;
+  color: var(--white-off);
+  line-height: 1.2;
 }
 
 .s-sub {
   font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 4px;
+  color: var(--gray-dark);
+  margin-top: 6px;
+  font-family: "Source Code Pro", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .expense-card .s-value {
-  color: var(--red-light);
+  color: var(--crimson);
 }
 
 .savings-card .s-value {
-  color: var(--green-light);
+  color: var(--supabase-green);
 }
 
 .progress-bar-container {
-  margin-top: 8px;
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 
 .progress-label {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: var(--text-secondary);
+  font-family: "Source Code Pro", monospace;
+  color: var(--gray-mid);
   margin-bottom: 8px;
+}
+
+.progress-title {
+  letter-spacing: 1.2px;
 }
 
 .progress-track {
   width: 100%;
-  height: 10px;
-  background: var(--bg-input);
-  border-radius: 20px;
+  height: 8px;
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   transition: width 0.5s ease;
-  background: linear-gradient(90deg, var(--green), var(--green-light));
+  background: var(--supabase-green);
 }
 
 .progress-fill.warning {
-  background: linear-gradient(90deg, var(--orange), #f9ca24);
+  background: var(--blue-accent);
 }
 
 .progress-fill.danger {
-  background: linear-gradient(90deg, var(--red), var(--red-light));
+  background: var(--crimson);
 }
 
-/* Freelance impact */
-.freelance-breakdown {
+/* Allocation Blocks */
+.allocation-block {
   margin-top: 16px;
-  padding: 14px 16px;
-  background: rgba(0, 184, 148, 0.06);
-  border: 1px solid rgba(0, 184, 148, 0.12);
-  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius);
 }
 
-.fb-title {
+.alloc-title {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--green);
+  font-weight: 400;
+  font-family: "Source Code Pro", monospace;
+  color: var(--gray-mid);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
+  letter-spacing: 1.2px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.fb-row {
+.alloc-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.alloc-row {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  padding: 3px 0;
+  align-items: center;
+  font-size: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
-.fb-label {
-  color: var(--text-secondary);
+.alloc-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.fb-val {
-  font-weight: 600;
-  color: var(--green-light);
-}
-
-/* Savings allocation */
-.savings-alloc {
-  margin-top: 16px;
-  padding: 14px 16px;
-  background: rgba(108, 92, 231, 0.06);
-  border: 1px solid rgba(108, 92, 231, 0.12);
-  border-radius: var(--radius-sm);
-}
-
-.sa-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent-light);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-}
-
-.sa-row {
+.alloc-label {
+  color: var(--gray-light);
   display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  padding: 4px 0;
+  align-items: center;
+  gap: 8px;
 }
 
-.sa-label {
-  color: var(--text-secondary);
+.cat-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--gray-mid);
 }
 
-.sa-val {
-  font-weight: 600;
-  color: var(--accent-light);
+.alloc-val {
+  font-weight: 400;
+  font-family: "Source Code Pro", monospace;
+  color: var(--white-off);
 }
 </style>

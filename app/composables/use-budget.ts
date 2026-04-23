@@ -29,7 +29,8 @@ export type CalcMode = "legacy_total" | "split_sources";
 export type Category = {
   id: string;
   name: string;
-  emoji: string;
+  icon?: string;
+  emoji?: string;
   type: CategoryType;
   value?: number;
   formula?: string;
@@ -49,7 +50,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   {
     id: "nafkah",
     name: "Nafkah Istri",
-    emoji: "💑",
+    icon: "i-lucide-heart-handshake",
     type: "percent_gaji",
     value: 10,
     deletable: false,
@@ -57,7 +58,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   {
     id: "listrik",
     name: "Uang Listrik",
-    emoji: "💡",
+    icon: "i-lucide-lightbulb",
     type: "fixed",
     value: 300000,
     deletable: true,
@@ -65,7 +66,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   {
     id: "kucing",
     name: "Makan Kucing",
-    emoji: "🐱",
+    icon: "i-lucide-cat",
     type: "fixed",
     value: 300000,
     deletable: true,
@@ -73,7 +74,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   {
     id: "sedekah",
     name: "Uang Sedekah",
-    emoji: "🤲",
+    icon: "i-lucide-hand-coins",
     type: "percent_gaji",
     value: 2.5,
     deletable: false,
@@ -81,7 +82,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   {
     id: "jajan",
     name: "Jajan Adik",
-    emoji: "🧒",
+    icon: "i-lucide-baby",
     type: "custom",
     formula: "jajan_adik",
     deletable: true,
@@ -89,7 +90,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   {
     id: "kuota",
     name: "Uang Kuota",
-    emoji: "📱",
+    icon: "i-lucide-smartphone",
     type: "fixed",
     value: 100000,
     deletable: true,
@@ -137,6 +138,7 @@ function toPlainCategory(category: Category): Category {
   const plain: Category = {
     id: category.id,
     name: category.name,
+    icon: category.icon,
     emoji: category.emoji,
     type: category.type,
     deletable: category.deletable,

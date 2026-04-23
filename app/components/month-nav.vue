@@ -12,15 +12,11 @@ defineEmits<{
 <template>
   <div class="month-nav">
     <button @click="$emit('prev')">
-      <svg viewBox="0 0 24 24">
-        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-      </svg>
+      <UIcon name="i-lucide-chevron-left" class="nav-icon" />
     </button>
     <span class="month-label">{{ monthLabel }}</span>
     <button @click="$emit('next')">
-      <svg viewBox="0 0 24 24">
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
+      <UIcon name="i-lucide-chevron-right" class="nav-icon" />
     </button>
   </div>
 </template>
@@ -31,14 +27,14 @@ defineEmits<{
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .month-nav button {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--bg-btn-primary);
+  border: 1px solid var(--border-dark);
   border-radius: var(--radius-sm);
-  color: var(--text-secondary);
+  color: var(--gray-mid);
   width: 36px;
   height: 36px;
   display: flex;
@@ -49,21 +45,21 @@ defineEmits<{
 }
 
 .month-nav button:hover {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
+  background: var(--bg-page);
+  color: var(--white-off);
+  border-color: var(--border-mid);
 }
 
-.month-nav button svg {
+.nav-icon {
   width: 18px;
   height: 18px;
-  fill: currentColor;
 }
 
 .month-label {
-  font-size: 16px;
-  font-weight: 700;
-  min-width: 160px;
+  font-size: 18px;
+  font-weight: 400;
+  min-width: 180px;
   text-align: center;
+  letter-spacing: -0.01em;
 }
 </style>
