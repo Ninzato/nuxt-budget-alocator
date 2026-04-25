@@ -58,17 +58,39 @@ const form = reactive<FormState>({
   rawValue: 0,
 });
 
-const valueDisplay = computed(() =>
-  form.rawValue ? formatNumber(form.rawValue) : "",
-);
+const rawPercentageStr = ref("");
+
+const valueDisplay = computed(() => {
+  if (form.type !== "fixed") {
+    return rawPercentageStr.value;
+  }
+  return form.rawValue ? formatNumber(form.rawValue) : "";
+});
 
 function onValueInput(event: Event) {
   errorMessage.value = "";
   const el = event.target as HTMLInputElement;
-  const raw = el.value.replace(/\D/g, "");
-  form.rawValue = raw ? Number.parseInt(raw) : 0;
-  el.value = form.rawValue ? formatNumber(form.rawValue) : "";
+  
+  if (form.type === "fixed") {
+    const raw = el.value.replace(/\D/g, "");
+    form.rawValue = raw ? Number.parseInt(raw) : 0;
+    el.value = form.rawValue ? formatNumber(form.rawValue) : "";
+  } else {
+    // Allow digits, dot, and comma
+    const rawStr = el.value.replace(/[^\d.,]/g, "");
+    rawPercentageStr.value = rawStr;
+    
+    const parsed = Number.parseFloat(rawStr.replace(/,/g, "."));
+    form.rawValue = !Number.isNaN(parsed) ? parsed : 0;
+    el.value = rawStr;
+  }
 }
+
+watch(() => form.type, (newType, oldType) => {
+  if (newType !== "fixed" && oldType === "fixed") {
+    rawPercentageStr.value = form.rawValue ? String(form.rawValue) : "";
+  }
+});
 
 // Clear error when user types in the name field
 watch(() => form.name, () => {
@@ -87,12 +109,14 @@ watch(
       form.icon = cat.icon || "i-lucide-circle";
       form.type = cat.type === "custom" ? "fixed" : (cat.type as CategoryType);
       form.rawValue = cat.type !== "custom" ? (cat.value ?? 0) : 0;
+      rawPercentageStr.value = form.type !== "fixed" ? String(form.rawValue) : "";
     }
     else {
       form.name = "";
       form.icon = "i-lucide-shopping-cart";
       form.type = "fixed";
       form.rawValue = 0;
+      rawPercentageStr.value = "";
     }
   },
   { immediate: true },
